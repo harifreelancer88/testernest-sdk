@@ -1,0 +1,18 @@
+buildscript {
+  ext {
+    buildToolsVersion = "34.0.0"
+    minSdkVersion = 21
+    compileSdkVersion = 34
+    targetSdkVersion = 34
+    kotlinVersion = "1.9.22"
+  }
+}
+
+allprojects {
+  repositories {
+    mavenCentral()
+    google()
+    maven { url("$rootDir/../node_modules/react-native/android") }
+    maven { url("$rootDir/../node_modules/jsc-android/dist") }
+  }
+}

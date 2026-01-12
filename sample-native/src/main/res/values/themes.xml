@@ -1,0 +1,10 @@
+<resources>
+    <style name="Theme.TesterNest.Sample" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">#1E3A8A</item>
+        <item name="colorPrimaryVariant">#1E40AF</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
+        <item name="colorSecondary">#0F766E</item>
+        <item name="colorSecondaryVariant">#115E59</item>
+        <item name="colorOnSecondary">#FFFFFF</item>
+    </style>
+</resources>

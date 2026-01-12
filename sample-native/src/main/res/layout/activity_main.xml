@@ -1,0 +1,87 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <EditText
+            android:id="@+id/inputPublicKey"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_public_key" />
+
+        <EditText
+            android:id="@+id/inputBaseUrl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_base_url"
+            android:text="https://myappcrew-tw.pages.dev" />
+
+        <Button
+            android:id="@+id/buttonInit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Init" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="12dp" />
+
+        <EditText
+            android:id="@+id/inputEventName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_event_name"
+            android:text="sample_event" />
+
+        <Button
+            android:id="@+id/buttonLogEvent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Log Event" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="12dp" />
+
+        <EditText
+            android:id="@+id/inputConnectCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_connect_code" />
+
+        <Button
+            android:id="@+id/buttonConnectCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Connect (6-digit)" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="12dp" />
+
+        <Button
+            android:id="@+id/buttonFlush"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Flush" />
+
+        <Button
+            android:id="@+id/buttonDebug"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Show Debug Snapshot" />
+
+        <TextView
+            android:id="@+id/textOutput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="12dp"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+</ScrollView>
