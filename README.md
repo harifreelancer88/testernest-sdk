@@ -2,25 +2,67 @@
 
 Production-ready Android Native SDK (Kotlin) for Testernest/MyAppCrew mobile tracking. This mirrors the Flutter SDK behavior and endpoints.
 
+## Requirements
+- minSdk 21
+- INTERNET is a normal permission; no runtime prompt is shown to users
+
 ## Native Android (Kotlin) Quickstart
 Get a tester connected in under 5 minutes.
 
-1) Add the dependency (Maven preferred; for now use `mavenLocal()` for development. This will move to Maven Central/GitHub Packages.)
+1) Add the dependency.
+Add the dependency in your module-level (app) build.gradle(.kts) dependencies block.
 
 ```kotlin
 repositories {
-    mavenLocal()
+    google()
     mavenCentral()
 }
+```
 
+Where to add repositories (recommended)
+
+```kotlin
+// settings.gradle.kts
+dependencyResolutionManagement {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+```
+
+```groovy
+// settings.gradle
+dependencyResolutionManagement {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+```
+
+If your project uses older Gradle setup, add mavenCentral() alongside google() in the project-level build.gradle repositories block.
+
+```kotlin
+// app/build.gradle.kts
 dependencies {
     implementation("com.testernest:testernest-android:0.1.0")
 }
 ```
 
+```groovy
+// app/build.gradle
+dependencies {
+    implementation "com.testernest:testernest-android:0.1.0"
+}
+```
+
+Replace 0.1.0 with the latest version from Maven Central.
+
 2) Initialize in your `Application`:
 
 ```kotlin
+import android.app.Application
 import com.testernest.android.Testernest
 
 class App : Application() {
@@ -36,9 +78,21 @@ class App : Application() {
 }
 ```
 
+Register this in AndroidManifest.xml: `android:name=".App"`
+
+```xml
+<application
+    android:name=".App"
+    ... >
+    ...
+</application>
+```
+
 3) Auto-attach the connect prompt in your Activity:
 
 ```kotlin
+import androidx.activity.ComponentActivity
+
 class MainActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
@@ -47,11 +101,20 @@ class MainActivity : ComponentActivity() {
 }
 ```
 
+No additional Proguard/R8 rules required (default).
+
 What the tester sees:
 - On first open, a 6-digit connect prompt appears.
 - After connecting once, the prompt never shows again.
 
-How to verify (logcat):
+### Verify (logcat)
+
+Expected: BOOTSTRAP 200 -> BATCH 200 -> (after entering code) CLAIM 200
+
+Sanity check:
+- First open: BOOTSTRAP 200 then BATCH 200
+- After entering 6-digit code: CLAIM 200
+- If you never see CLAIM: you are not connected yet (or already connected and prompt won't show)
 
 Windows CMD (findstr):
 
@@ -65,37 +128,69 @@ macOS/Linux (grep -E):
 adb logcat -v time | grep -E "Testernest: (BOOTSTRAP|BATCH|CLAIM)"
 ```
 
-Note: On first open you should see BOOTSTRAP 200, then BATCH 200, and after entering code CLAIM 200.
-
 Troubleshooting:
-- Prompt not showing: `adb shell pm clear <package>`
-- "Invalid code": regenerate a new code in the dashboard and confirm the app/publicKey
-- 401 invalid token: bootstrap retry is automatic
-
-## Publishing (maintainers)
-
-1) Add to `%USERPROFILE%\.gradle\gradle.properties` (examples only):
-
-```properties
-centralPortalUsername=...
-centralPortalPassword=...
-signing.gnupg.keyName=BB1578FE40BB3C12
-signing.gnupg.passphrase=...
-```
-
-2) Ensure the project `gradle.properties` POM metadata entries are set to real values before publishing (POM_URL, POM_SCM_URL, POM_LICENSE_NAME, etc).
-
-3) Publish:
-
-```bat
-.\gradlew clean publishAggregationToCentralPortal
-```
-
-4) With USER_MANAGED, after upload go to Central Portal → Deployments → Publish.
+- Prompt not showing: if already connected, it won't reappear; clear app data with `adb shell pm clear <package>`
+- Invalid code: generate a new code for the same app/publicKey in the dashboard
+- 401 invalid token: SDK auto-retries bootstrap
 
 ## React Native (Android)
 
-Install + add one line and testers see the prompt automatically:
+1) Install the package.
+
+```bash
+npm i @testernest/react-native
+```
+
+```bash
+yarn add @testernest/react-native
+```
+
+If the npm package isn't published yet, use the local path install below.
+If the npm package name differs or you're developing locally, install from a local path.
+
+```bash
+yarn add file:../react-native-testernest
+```
+
+```bash
+npm i ../react-native-testernest
+```
+
+2) Ensure Android repositories include google() + mavenCentral().
+
+```kotlin
+// settings.gradle.kts
+dependencyResolutionManagement {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+```
+
+```groovy
+// settings.gradle
+dependencyResolutionManagement {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+```
+
+3) Initialize in JS.
+
+```tsx
+import { init } from '@testernest/react-native';
+
+init({
+  publicKey: 'YOUR_PUBLIC_KEY',
+  baseUrl: 'https://myappcrew-tw.pages.dev',
+  enableLogs: false,
+});
+```
+
+4) Show the connect prompt (auto-shows until connected once).
 
 ```tsx
 import { TesternestConnectPrompt } from '@testernest/react-native';
@@ -106,18 +201,7 @@ import { TesternestConnectPrompt } from '@testernest/react-native';
 />
 ```
 
-API surface:
-- `init(context, publicKey, baseUrl, enableLogs)`
-- `logEvent(name, properties)`
-- `flushNow()`
-- `setCurrentScreen(screen)`
-- `connectTester(code6)`
-- `connectFromText(input, publicKeyOverride)`
-- `disconnectTester()`
-- `isInitialized()`
-- `isTesterConnected()`
-- `attachAutoConnectPrompt(activity, config?)`
-- `getDebugSnapshot()`
+Render `<TesternestConnectPrompt />` once at the root of the app (above navigation) so it can show on first launch.
 
 ## Behavior notes
 - Session id is generated per app launch.
@@ -135,3 +219,8 @@ API surface:
 - Trigger `connectTester` with a 6-digit code; confirm new tester id is stored.
 - Call `flushNow()` and confirm queued events are sent.
 - Call `getDebugSnapshot()` and verify baseUrl/publicKey presence and queue length.
+
+## Maintainers: Publishing
+- Add signing + Central Portal credentials in `%USERPROFILE%\.gradle\gradle.properties`.
+- Run `.\gradlew clean publishAggregationToCentralPortal`.
+- In Central Portal, publish the uploaded deployment.
