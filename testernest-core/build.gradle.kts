@@ -60,6 +60,8 @@ val pomLicenseUrl = providers.gradleProperty("POM_LICENSE_URL").orNull ?: "REPLA
 val pomDeveloperId = providers.gradleProperty("POM_DEVELOPER_ID").orNull ?: "REPLACE_ME"
 val pomDeveloperName = providers.gradleProperty("POM_DEVELOPER_NAME").orNull ?: "REPLACE_ME"
 val pomDeveloperEmail = providers.gradleProperty("POM_DEVELOPER_EMAIL").orNull ?: "REPLACE_ME"
+val pomName = providers.gradleProperty("POM_NAME").orNull ?: "REPLACE_ME"
+val pomDescription = providers.gradleProperty("POM_DESCRIPTION").orNull ?: "REPLACE_ME"
 
 afterEvaluate {
     publishing {
@@ -71,8 +73,8 @@ afterEvaluate {
                 version = project.version.toString()
                 artifact(dokkaJavadocJar)
                 pom {
-                    name.set("TesterNest Core SDK")
-                    description.set("Core networking and tracking for the TesterNest Android SDK.")
+                    name.set(pomName)
+                    description.set(pomDescription)
                     url.set(pomUrl)
                     licenses {
                         license {

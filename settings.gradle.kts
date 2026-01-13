@@ -1,15 +1,13 @@
-rootProject.name = "testernest-sdk"
-
-plugins {
-    id("com.gradleup.nmcp.settings") version "1.4.3"
-}
-
 pluginManagement {
     repositories {
         google()
         mavenCentral()
         gradlePluginPortal()
     }
+}
+
+plugins {
+    id("com.gradleup.nmcp.settings") version "1.4.3"
 }
 
 dependencyResolutionManagement {
