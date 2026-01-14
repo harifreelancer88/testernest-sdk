@@ -9,7 +9,7 @@ Production-ready Android Native SDK (Kotlin) for Testernest/MyAppCrew mobile tra
 ## Native Android (Kotlin) Quickstart
 Get a tester connected in under 5 minutes.
 
-1) Add the dependency.
+1) Add Maven Central and the dependency.
 Add the dependency in your module-level (app) build.gradle(.kts) dependencies block.
 
 ```kotlin
@@ -46,18 +46,18 @@ If your project uses older Gradle setup, add mavenCentral() alongside google() i
 ```kotlin
 // app/build.gradle.kts
 dependencies {
-    implementation("com.testernest:testernest-android:0.1.0")
+    implementation("com.testernest:testernest-android:0.1.1")
 }
 ```
 
 ```groovy
 // app/build.gradle
 dependencies {
-    implementation "com.testernest:testernest-android:0.1.0"
+    implementation "com.testernest:testernest-android:0.1.1"
 }
 ```
 
-Replace 0.1.0 with the latest version from Maven Central.
+Replace 0.1.1 with the latest version from Maven Central.
 
 2) Initialize in your `Application`:
 
@@ -88,7 +88,7 @@ Register this in AndroidManifest.xml: `android:name=".App"`
 </application>
 ```
 
-3) Auto-attach the connect prompt in your Activity:
+3) Auto-attach the connect prompt in your Activity on resume:
 
 ```kotlin
 import androidx.activity.ComponentActivity
@@ -128,12 +128,8 @@ macOS/Linux (grep -E):
 adb logcat -v time | grep -E "Testernest: (BOOTSTRAP|BATCH|CLAIM)"
 ```
 
-Troubleshooting:
-- Prompt not showing: if already connected, it won't reappear; clear app data with `adb shell pm clear <package>`
-- Invalid code: generate a new code for the same app/publicKey in the dashboard
-- 401 invalid token: SDK auto-retries bootstrap
-
-## React Native (Android)
+## React Native (Android) Quickstart
+Android-only for now. iOS support is planned later.
 
 1) Install the package.
 
@@ -144,6 +140,8 @@ npm i @testernest/react-native
 ```bash
 yarn add @testernest/react-native
 ```
+
+2) Ensure Android repositories include google() + mavenCentral().
 
 If the npm package isn't published yet, use the local path install below.
 If the npm package name differs or you're developing locally, install from a local path.
@@ -156,44 +154,16 @@ yarn add file:../react-native-testernest
 npm i ../react-native-testernest
 ```
 
-2) Ensure Android repositories include google() + mavenCentral().
-
-```kotlin
-// settings.gradle.kts
-dependencyResolutionManagement {
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-```
-
-```groovy
-// settings.gradle
-dependencyResolutionManagement {
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
-```
-
-3) Initialize in JS.
+3) Initialize and render the connect prompt.
 
 ```tsx
-import { init } from '@testernest/react-native';
+import { init, TesternestConnectPrompt } from '@testernest/react-native';
 
 init({
   publicKey: 'YOUR_PUBLIC_KEY',
   baseUrl: 'https://myappcrew-tw.pages.dev',
   enableLogs: false,
 });
-```
-
-4) Show the connect prompt (auto-shows until connected once).
-
-```tsx
-import { TesternestConnectPrompt } from '@testernest/react-native';
 
 <TesternestConnectPrompt
   publicKey="YOUR_PUBLIC_KEY"
@@ -202,6 +172,14 @@ import { TesternestConnectPrompt } from '@testernest/react-native';
 ```
 
 Render `<TesternestConnectPrompt />` once at the root of the app (above navigation) so it can show on first launch.
+
+## Troubleshooting
+
+| Issue | Likely cause | Fix |
+| --- | --- | --- |
+| Prompt not showing | Already connected or prompt dismissed | Clear app data (`adb shell pm clear <package>`) and relaunch. |
+| Invalid code | Code expired or wrong app/publicKey | Generate a fresh 6-digit code for the same app/publicKey in the dashboard. |
+| 401 invalid token | Token expired/invalid | SDK auto-retries bootstrap; if it persists, re-init and verify publicKey/baseUrl. |
 
 ## Behavior notes
 - Session id is generated per app launch.
@@ -224,3 +202,9 @@ Render `<TesternestConnectPrompt />` once at the root of the app (above navigati
 - Add signing + Central Portal credentials in `%USERPROFILE%\.gradle\gradle.properties`.
 - Run `.\gradlew clean publishAggregationToCentralPortal`.
 - In Central Portal, publish the uploaded deployment.
+
+## Changelog
+
+### 0.1.1
+- Docs: clarified Android + React Native quickstarts, added troubleshooting table, and iOS status note.
+- Hygiene: ensure release metadata and version bump.

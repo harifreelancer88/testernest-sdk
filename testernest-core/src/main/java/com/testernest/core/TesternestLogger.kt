@@ -34,6 +34,8 @@ class TesternestLogger {
         masked = masked.replace(Regex("(?i)Bearer\\s+[A-Za-z0-9._-]+"), "Bearer ***")
         masked = masked.replace(Regex("(?i)access[_-]?token\\s*[=:]\\s*[A-Za-z0-9._-]+"), "accessToken=***")
         masked = masked.replace(Regex("(?i)\"access[_-]?token\"\\s*:\\s*\"[^\"]+\""), "\"accessToken\":\"***\"")
+        masked = masked.replace(Regex("(?i)connect[_-]?code\\s*[=:]\\s*[A-Za-z0-9._-]+"), "connectCode=***")
+        masked = masked.replace(Regex("(?i)\"connect[_-]?code\"\\s*:\\s*\"[^\"]+\""), "\"connectCode\":\"***\"")
         return masked
     }
 }

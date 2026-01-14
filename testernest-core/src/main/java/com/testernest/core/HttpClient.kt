@@ -12,6 +12,7 @@ open class HttpClient(private val jsonEncoder: JsonEncoder, private val logger: 
     private val accessTokenRegex = Regex("\"(accessToken)\"\\s*:\\s*\"[^\"]*\"", RegexOption.IGNORE_CASE)
     private val refreshTokenRegex = Regex("\"(refreshToken)\"\\s*:\\s*\"[^\"]*\"", RegexOption.IGNORE_CASE)
     private val authorizationRegex = Regex("\"(authorization)\"\\s*:\\s*\"[^\"]*\"", RegexOption.IGNORE_CASE)
+    private val connectCodeRegex = Regex("\"(connect[_-]?code)\"\\s*:\\s*\"[^\"]*\"", RegexOption.IGNORE_CASE)
 
     open fun post(
         url: String,
@@ -146,6 +147,7 @@ open class HttpClient(private val jsonEncoder: JsonEncoder, private val logger: 
         redacted = accessTokenRegex.replace(redacted) { "\"${it.groupValues[1]}\":\"***\"" }
         redacted = refreshTokenRegex.replace(redacted) { "\"${it.groupValues[1]}\":\"***\"" }
         redacted = authorizationRegex.replace(redacted) { "\"${it.groupValues[1]}\":\"***\"" }
+        redacted = connectCodeRegex.replace(redacted) { "\"${it.groupValues[1]}\":\"***\"" }
         return redacted
     }
 }
