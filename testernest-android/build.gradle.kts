@@ -98,6 +98,13 @@ afterEvaluate {
 }
 
 signing {
-    useGpgCmd()
+    val signingKeyFile = providers.gradleProperty("signingKeyFile").orNull
+    val signingPassword = providers.gradleProperty("signingPassword").orNull
+    if (!signingKeyFile.isNullOrBlank() && !signingPassword.isNullOrBlank()) {
+        val keyContent = file(signingKeyFile).readText()
+        useInMemoryPgpKeys(keyContent, signingPassword)
+    } else {
+        useGpgCmd()
+    }
     sign(publishing.publications)
 }
