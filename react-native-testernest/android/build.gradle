@@ -3,6 +3,11 @@ plugins {
   id 'org.jetbrains.kotlin.android'
 }
 
+repositories {
+  google()
+  mavenCentral()
+}
+
 android {
   namespace 'com.testernest.reactnative'
   compileSdkVersion 34
@@ -25,5 +30,5 @@ android {
 
 dependencies {
   implementation 'com.facebook.react:react-native:+'
-  implementation project(':testernest-android')
+  implementation "com.testernest:testernest-android:$TESTERNEST_ANDROID_VERSION"
 }

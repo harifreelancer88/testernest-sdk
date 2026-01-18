@@ -10,12 +10,16 @@ Only 6-digit connect is supported (no claim token).
 yarn add @testernest/react-native
 ```
 
-### Android setup
+### Android setup (Maven Central)
 
-1) Ensure the Testernest Android SDK is available to Gradle. For this repo, the module is included locally.
-2) Rebuild the app after installing the package.
+1) Ensure `google()` + `mavenCentral()` are in your Android repositories (project or settings).
+2) Install the package and rebuild the app.
 
-If you are integrating outside this repo, add the Testernest Android SDK dependency to your app or a Maven repository that hosts it.
+Verify (Windows CMD):
+
+```bat
+adb logcat -v time | findstr /i "Testernest: BOOTSTRAP Testernest: BATCH Testernest: CLAIM"
+```
 
 ## Usage
 
@@ -72,3 +76,9 @@ Auto connect prompt (1-line integration):
 cd android
 ./gradlew assembleRelease
 ```
+
+## Publish checklist
+
+1) `npm login`
+2) `npm publish --access public`
+3) `git tag vX.Y.Z`

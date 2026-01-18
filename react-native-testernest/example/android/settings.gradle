@@ -6,16 +6,16 @@ pluginManagement {
   }
   includeBuild('../node_modules/@react-native/gradle-plugin')
   plugins {
-    id("com.android.application") version "8.1.1"
-    id("com.android.library") version "8.1.1"
-    id("org.jetbrains.kotlin.android") version "1.9.22"
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.22"
+    id("com.android.application") version "7.4.2"
+    id("com.android.library") version "7.4.2"
+    id("org.jetbrains.kotlin.android") version "1.7.22"
   }
 }
 
 dependencyResolutionManagement {
   repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
   repositories {
+    mavenLocal()
     google()
     mavenCentral()
     maven { url("$rootDir/../node_modules/react-native/android") }
@@ -29,9 +29,3 @@ include ':app'
 
 include ':react-native-testernest'
 project(':react-native-testernest').projectDir = new File(rootProject.projectDir, '../../android')
-
-include ':testernest-android'
-project(':testernest-android').projectDir = new File(rootProject.projectDir, '../../../testernest-android')
-
-include ':testernest-core'
-project(':testernest-core').projectDir = new File(rootProject.projectDir, '../../../testernest-core')

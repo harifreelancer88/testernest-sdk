@@ -1,7 +1,6 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
-    id("org.jetbrains.kotlin.plugin.serialization")
     id("maven-publish")
     id("org.jetbrains.dokka")
     id("signing")
@@ -39,11 +38,10 @@ android {
 
 dependencies {
     implementation("androidx.core:core-ktx:1.12.0")
-    implementation("com.squareup.okhttp3:okhttp:4.12.0")
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
+    implementation("com.squareup.okhttp3:okhttp:4.10.0")
 
     testImplementation("junit:junit:4.13.2")
-    testImplementation("org.jetbrains.kotlin:kotlin-test:1.9.24")
+    testImplementation("org.jetbrains.kotlin:kotlin-test:1.7.22")
 }
 
 val dokkaJavadocJar = tasks.register<Jar>("dokkaJavadocJar") {

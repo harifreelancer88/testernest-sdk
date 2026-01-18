@@ -21,8 +21,8 @@ open class HttpClient(private val jsonEncoder: JsonEncoder, private val logger: 
         operation: String? = null
     ): ResponseWrapper<AuthResponse> {
         val json = when (body) {
-            is BootstrapRequest -> jsonEncoder.encodeToString(BootstrapRequest.serializer(), body)
-            is ClaimRequest -> jsonEncoder.encodeToString(ClaimRequest.serializer(), body)
+            is BootstrapRequest -> jsonEncoder.encodeBootstrap(body)
+            is ClaimRequest -> jsonEncoder.encodeClaim(body)
             else -> "{}"
         }
         val request = Request.Builder()
@@ -38,7 +38,7 @@ open class HttpClient(private val jsonEncoder: JsonEncoder, private val logger: 
     }
 
     open fun postEvents(url: String, events: List<EventPayload>, bearerToken: String): NetworkResult {
-        val batchJson = jsonEncoder.encodeToString(EventBatch.serializer(), EventBatch(events))
+        val batchJson = jsonEncoder.encodeEventBatch(events)
         val request = Request.Builder()
             .url(url)
             .post(batchJson.toRequestBody(jsonMediaType))
@@ -70,7 +70,7 @@ open class HttpClient(private val jsonEncoder: JsonEncoder, private val logger: 
                     if (bodyString.isBlank()) {
                         ResponseWrapper(success = false, error = "Empty response body", code = response.code, bodySnippet = snippet)
                     } else {
-                        val parsed = jsonEncoder.decode(bodyString, AuthResponse.serializer())
+                        val parsed = jsonEncoder.decodeAuthResponse(bodyString)
                         ResponseWrapper(success = true, body = parsed, code = response.code, bodySnippet = snippet)
                     }
                 } else {

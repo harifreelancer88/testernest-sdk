@@ -49,4 +49,19 @@ dependencies {
     implementation 'org.webkit:android-jsc:+'
   }
   implementation project(':react-native-testernest')
+  constraints {
+    implementation("org.jetbrains.kotlin:kotlin-stdlib") {
+      version { strictly("1.7.22") }
+      because("RN 0.72 toolchain expects Kotlin 1.7.x")
+    }
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7") {
+      version { strictly("1.7.22") }
+    }
+    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8") {
+      version { strictly("1.7.22") }
+    }
+    implementation("org.jetbrains.kotlin:kotlin-reflect") {
+      version { strictly("1.7.22") }
+    }
+  }
 }

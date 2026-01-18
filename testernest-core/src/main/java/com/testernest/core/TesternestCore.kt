@@ -20,7 +20,7 @@ class TesternestCore(
     private val retryPolicy: RetryPolicy = RetryPolicy()
 ) {
     companion object {
-        const val SDK_VERSION = "0.1.0-android"
+        const val SDK_VERSION = "0.1.2-android"
     }
 
     @Volatile
@@ -76,7 +76,7 @@ class TesternestCore(
             sessionId = sessionId,
             testerId = StorageKeys.read(prefs, StorageKeys.TESTER_ID),
             screen = currentScreen,
-            properties = jsonEncoder.toJsonObject(properties),
+            properties = jsonEncoder.normalizeProperties(properties),
             packageName = appInfo.packageName,
             appVersion = appInfo.appVersion,
             buildNumber = appInfo.buildNumber,
