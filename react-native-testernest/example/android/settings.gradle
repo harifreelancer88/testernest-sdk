@@ -15,7 +15,6 @@ pluginManagement {
 dependencyResolutionManagement {
   repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
   repositories {
-    mavenLocal()
     google()
     mavenCentral()
     maven { url("$rootDir/../node_modules/react-native/android") }
